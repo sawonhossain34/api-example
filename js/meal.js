@@ -23,6 +23,10 @@ const displayMeals = meals => {
                     <div class="card-body">
                       <h5 class="card-title">${meal.strMeal}</h5>
                       <p class="card-text">${meal.strInstructions}</p>
+                      <!-- Button trigger modal -->
+                        <button onclick = loadMealDetail(${meal.idMeal}) type="button" class="btn btn-primary"       data-bs-toggle="modal" data-bs-target="#mealDetails">
+                             Details
+                        </button>
                     </div>
                   </div>
         
@@ -39,6 +43,20 @@ const searchMeals = () => {
     loadMeals(searchText);
 
 
+}
+const loadMealDetail = idMeal => {
+    const url =`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idMeal}`
+    fetch(url)
+    // console.log(url);
+    .then(res => res.json())
+    .then(data => displayMealDetails(data.meals[0]))
+}
+const displayMealDetails = meal => {
+    document.getElementById('mealDetailsLabel').innerText = meal.strMeal;
+    const mealDetails =document.getElementById('mealDetailsBody');
+    mealDetails.innerHTML=`
+    <img class="img-fluid" src = "${meal.strMealThumb}">
+    `
 }
 
 loadMeals('fish');
